@@ -68,23 +68,37 @@ var sumOfInterests = bankBalances.filter(groupStates).map(getInterest).reduce(ge
     round this number to the nearest dollar before moving on.
   )
  */
-function groupBy(data,property){
-  return data.reduce((acc,obj) =>{
-    const key = obj[property];
-    if(!acc[key]){
-      acc[key] = [];
-    }
-    acc[key].push(obj);
-    return acc
-  }, {})  
-};
-let newBank = groupBy(bankBalances,'state');
-for(keys in newBank){
-  newBank[keys] = newBank[keys].map(amount).reduce(getSum)
-};
+// function groupBy(data,property){
+//   return data.reduce((acc,obj) =>{
+//     const key = obj[property];
+//     if(!acc[key]){
+//       acc[key] = [];
+//     }
+//     acc[key].push(obj);
+   
+//     return acc
+//   }, {})
+   
+// };
+// let newBank = groupBy(bankBalances,'state');
+// console.log(newBank)
+// for(keys in newBank){
+//   newBank[keys] = newBank[keys].map(amount).reduce(getSum)
+// };
+// console.log(newBank)
 
 
-var stateSums = newBank;
+
+
+ 
+
+
+
+let states = bankBalances
+console.log(states)
+let stateSums = {};
+
+// console.log(stateSums)
 /*
   for all states *NOT* in the following states:
     Wisconsin
@@ -102,26 +116,26 @@ var stateSums = newBank;
     round this number to the nearest dollar before moving on.
   )
  */
-function groupClassB(item){
-  if(item.state !== 'WI' && item.state !== "IL" && item.state !== 'WY' &&  item.state !== 'OH' && item.state !== 'GA' && item.state !=='DE'){
-    return item
-  }
-}
-function interest(item){
-  return Math.round(item * .189)
-}
-let classB =  groupBy(bankBalances.filter(groupClassB),'state');
-for(keys in classB){
-  classB[keys]=classB[keys].map(amount).reduce(getSum)
-}
-bankBalances.filter(groupClassB);
+// function groupClassB(item){
+//   if(item.state !== 'WI' && item.state !== "IL" && item.state !== 'WY' &&  item.state !== 'OH' && item.state !== 'GA' && item.state !=='DE'){
+//     return item
+//   }
+// }
+// function interest(item){
+//   return Math.round(item * .189)
+// }
+// let classB =  groupBy(bankBalances.filter(groupClassB),'state');
+// for(keys in classB){
+//   classB[keys]=classB[keys].map(amount).reduce(getSum)
+// }
+// bankBalances.filter(groupClassB);
 
-var sumOfHighInterests  = Object.values(classB).map(interest).filter((item) => {
-  if(item > 50000){
-    return item
-  }
-}).reduce(getSum);
-
+// var sumOfHighInterests  = Object.values(classB).map(interest).filter((item) => {
+//   if(item > 50000){
+//     return item
+//   }
+// }).reduce(getSum);
+var sumOfHighInterests=null;
 
 
  
@@ -135,7 +149,7 @@ var sumOfHighInterests  = Object.values(classB).map(interest).filter((item) => {
   in the state is less than 1,000,000
  */
 var lowerSumStates = [];
-console.log(stateSums)
+
 
 
 /*
