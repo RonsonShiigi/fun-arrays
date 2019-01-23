@@ -68,37 +68,20 @@ var sumOfInterests = bankBalances.filter(groupStates).map(getInterest).reduce(ge
     round this number to the nearest dollar before moving on.
   )
  */
-// function groupBy(data,property){
-//   return data.reduce((acc,obj) =>{
-//     const key = obj[property];
-//     if(!acc[key]){
-//       acc[key] = [];
-//     }
-//     acc[key].push(obj);
-   
-//     return acc
-//   }, {})
-   
-// };
-// let newBank = groupBy(bankBalances,'state');
-// console.log(newBank)
-// for(keys in newBank){
-//   newBank[keys] = newBank[keys].map(amount).reduce(getSum)
-// };
-// console.log(newBank)
+
+function setStates(item){
+  stateSums[item.state] = 0;
+}
+function getStateAmount(item){
+  stateSums[item.state] += Number(item.amount)
+}
 
 
-
-
- 
-
-
-
-let states = bankBalances
-console.log(states)
 let stateSums = {};
-
+bankBalances.map(setStates);
+bankBalances.map(getStateAmount);
 // console.log(stateSums)
+
 /*
   for all states *NOT* in the following states:
     Wisconsin
@@ -116,31 +99,38 @@ let stateSums = {};
     round this number to the nearest dollar before moving on.
   )
  */
-// function groupClassB(item){
-//   if(item.state !== 'WI' && item.state !== "IL" && item.state !== 'WY' &&  item.state !== 'OH' && item.state !== 'GA' && item.state !=='DE'){
-//     return item
-//   }
-// }
-// function interest(item){
-//   return Math.round(item * .189)
-// }
-// let classB =  groupBy(bankBalances.filter(groupClassB),'state');
-// for(keys in classB){
-//   classB[keys]=classB[keys].map(amount).reduce(getSum)
-// }
-// bankBalances.filter(groupClassB);
-
-// var sumOfHighInterests  = Object.values(classB).map(interest).filter((item) => {
-//   if(item > 50000){
-//     return item
-//   }
-// }).reduce(getSum);
-var sumOfHighInterests=null;
-
-
+  var classB = {};
  
+function groupClassB(item){
+  if(item.state !== 'WI' && item.state !== "IL" && item.state !== 'WY' &&  item.state !== 'OH' && item.state !== 'GA' && item.state !=='DE'){
+    return item
+  }
+}
+
+function setClassB(item){
+  classB[item.state] = 0;
+}
+
+function sumClassB(item){
+  classB[item.state] += Number(item.amount)
+}
+
+function singleInterest(item){
+  return Math.round(item * .189)
+}
+
+function stayHi(item){
+  if(item > 50000){
+    return item
+  }
+}
 
 
+
+//filters out wanted states and sums them
+bankBalances.filter(groupClassB).map(setClassB);
+bankBalances.filter(groupClassB).map(sumClassB);
+var sumOfHighInterests = Object.values(classB).map(singleInterest).filter(stayHi).reduce(getSum)
 
 
 /*
@@ -148,7 +138,13 @@ var sumOfHighInterests=null;
   abbreviations of each state where the sum of amounts
   in the state is less than 1,000,000
  */
+
 var lowerSumStates = [];
+for(key in stateSums){
+  if(stateSums[key] < 1000000){
+    lowerSumStates.push(key)
+  }
+}
 
 
 
@@ -156,7 +152,12 @@ var lowerSumStates = [];
   aggregate the sum of each state into one hash table
   `higherStateSums` should be the sum of all states with totals greater than 1,000,000
  */
-var higherStateSums = null;
+function sumHi(acc,current){
+  if(current > 1000000){
+    acc += current
+  }return acc
+}
+var higherStateSums = Object.values(stateSums).reduce(sumHi);
 
 
 
@@ -176,6 +177,32 @@ var higherStateSums = null;
   otherwise set it to `false`
  */
 var areStatesInHigherStateSum = null;
+let areHi = bankBalances.filter(groupStates)
+let classA = {};
+
+function setClassA(item){
+  classA[item.state] = 0
+}
+
+function sumClassA(item){
+  classA[item.state] += Number(item.amount)
+}
+areHi.map(setClassA);
+areHi.map(sumClassA)
+let classASums = Object.values(classA)
+
+function areAllHi(item){
+  let hold = [];
+  if(item > 2550000){
+    hold.push(item)
+  }
+  if(hold.length === classASums.length){
+    areStatesInHigherStateSum = true;
+  }else{
+    areStatesInHigherStateSum = false;
+  }
+}
+classASums.map(areAllHi);
 
 
 
@@ -195,6 +222,21 @@ var areStatesInHigherStateSum = null;
  */
 
 var anyStatesInHigherStateSum = null;
+
+function anyHi(item){
+  let hold = [];
+  if(item > 2550000){
+    hold.push(item)
+  }
+  if(hold.length > 0){
+    anyStatesInHigherStateSum = true;
+  }else{
+    anyStatesInHigherStateSum = false
+  }
+}
+
+classASums.map(anyHi);
+
 
 
 module.exports = {
