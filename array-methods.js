@@ -142,14 +142,34 @@ var sumOfHighInterests = Object.values(classB).map(singleInterest).filter(stayHi
   in the state is less than 1,000,000
  */
 
-var lowerSumStates = [];
-for(key in stateSums){
-  if(stateSums[key] < 1000000){
-    lowerSumStates.push(key)
+// var lowerSumStates = [];
+// for(key in stateSums){
+//   if(stateSums[key] < 1000000){
+//     lowerSumStates.push(key)
+//   }
+// }
+function setCheck(item){
+  lowStates[item.state]= 0
+}
+
+function setSums(item){
+  lowStates[item.state] += Number(item.amount)
+}
+
+function deleteHi(item){
+  if(lowStates[item.state] > 1000000){
+    delete lowStates[item.state]
   }
 }
 
 
+let lowStates = {};
+bankBalances.map(setCheck)
+bankBalances.map(setSums)
+bankBalances.map(deleteHi)
+
+
+var lowerSumStates = Object.keys(lowStates)
 
 /*
   aggregate the sum of each state into one hash table
