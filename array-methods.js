@@ -69,9 +69,12 @@ var sumOfInterests = bankBalances.filter(groupStates).map(getInterest).reduce(ge
   )
  */
 
+ //sets object to have states as key
 function setStates(item){
   stateSums[item.state] = 0;
 }
+
+//sums amount of each state
 function getStateAmount(item){
   stateSums[item.state] += Number(item.amount)
 }
@@ -180,10 +183,12 @@ var areStatesInHigherStateSum = null;
 let areHi = bankBalances.filter(groupStates)
 let classA = {};
 
+//sets object to have each state as a key
 function setClassA(item){
   classA[item.state] = 0
 }
 
+//sums the amounts of each state
 function sumClassA(item){
   classA[item.state] += Number(item.amount)
 }
@@ -202,6 +207,7 @@ function areAllHi(item){
     areStatesInHigherStateSum = false;
   }
 }
+
 classASums.map(areAllHi);
 
 
