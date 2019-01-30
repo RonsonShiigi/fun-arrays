@@ -175,11 +175,13 @@ var lowerSumStates = Object.keys(lowStates)
   aggregate the sum of each state into one hash table
   `higherStateSums` should be the sum of all states with totals greater than 1,000,000
  */
-function sumHi(acc,current){
+
+ function sumHi(acc,current){
   if(current > 1000000){
     acc += current
   }return acc
 }
+
 var higherStateSums = Object.values(stateSums).reduce(sumHi);
 
 
@@ -212,6 +214,7 @@ function setClassA(item){
 function sumClassA(item){
   classA[item.state] += Number(item.amount)
 }
+
 areHi.map(setClassA);
 areHi.map(sumClassA)
 let classASums = Object.values(classA)
